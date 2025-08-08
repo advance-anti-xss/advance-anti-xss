@@ -1,5 +1,6 @@
 <?php
 
+// return array of fallback entities
 return [
     "\t" => '&Tab;',
     "\n" => '&NewLine;',
